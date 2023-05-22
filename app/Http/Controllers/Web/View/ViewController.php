@@ -8,6 +8,10 @@ use App\Models\Menu;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Customer;
+use App\Models\Table;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 class ViewController extends Controller
 {
@@ -28,40 +32,34 @@ class ViewController extends Controller
 
     public function view_dashboard()
     {
+
         if(Auth::check()) {
-            if(Auth::user()->role == 'admin') {
-                $menu = Menu::all();
-                return view('layout.dashboard-admin', compact('menu'));
-            }else {
-                $menu = Menu::with('category')->get();
-                $costumer = Customer::all();
+                $menu = Menu::with('cate')->get();
+                $meja = Table::all();
                 $order = Order::all();
-
-                return view('layout.dashboard-kasir' , compact('menu','costumer','order'));
-            }
+                $hasil = Order::sum('total_price');
+                $chart = Order::select( DB::raw('count(*) as count'),'menu', DB::raw('MONTHNAME(created_at) as month'))
+            ->groupBy('month','menu')->get();
+            // return $chart;
+                return view('layout.dashboard-kasir' , compact('menu','meja','order','hasil','chart'));
         }else{
             return redirect()->route('view.login');
         }
     }
-
-    public function view_add_menu()
-    {
-        if(Auth::check()){
-            return view('layout.menu.add');
-        }else{
-            return redirect()->route('view.login');
-        }
-    }
+// ====================================================================
 
     public function view_menu()
     {
+        $menu = Menu::paginate(5);
+        $cate = Category::all();
         if(Auth::check()){
-            return view('layout.menu.menu');
+            return view('layout.menu.menu' , compact('menu', 'cate'));
         }else{
             return redirect()->route('view.login');
         }
     }
 
+// ================================================================
     public function view_category()
     {
         if(Auth::check()){
@@ -71,14 +69,30 @@ class ViewController extends Controller
             return redirect()->route('view.login');
         }
     }
+// ============================================================
 
-
-    public function view_orders()
+    public function view_table()
     {
         if(Auth::check()){
-            return view('layout.orders.orders');
+            $meja = Table::paginate(5);
+            return view('layout.table.table' , compact('meja'));
         }else{
             return redirect()->route('view.login');
         }
     }
+
+// ============================================================
+
+public function view_order()
+{
+    $menu = Menu::with('cate')->get();
+    $meja = Table::all();
+    $order = Order::orderby('created_at')->get();
+    if(Auth::check()){
+        return view('layout.orders.orders'  , compact('meja', 'menu', 'order'));
+    }else{
+        return redirect()->route('view.login');
+    }
+}
+
 }

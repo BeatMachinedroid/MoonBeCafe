@@ -18,7 +18,7 @@
     });
 
 
-    /* 
+    /*
     ------------------------------------------------
     Sidebar open close animated humberger icon
     ------------------------------------------------*/
@@ -31,7 +31,7 @@
 
 
 
-    /* TO DO LIST 
+    /* TO DO LIST
     --------------------*/
     $(".tdl-new").on('keypress', function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -64,10 +64,5 @@
         });
         return false;
     });
-
-
-    
-
-
 
 })(jQuery);

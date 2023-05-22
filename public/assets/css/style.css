@@ -4517,3 +4517,10 @@ h6.h1 {
     display: inline-block !important;
   }
 }
+
+.user-menu {
+    float: right;
+    margin: 10px;
+    position: relative;
+    z-index: 99;
+}

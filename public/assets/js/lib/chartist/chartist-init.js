@@ -51,7 +51,7 @@
 
 
 
-//Simple line chart 
+//Simple line chart
 
 new Chartist.Line('.ct-sm-line-chart', {
   labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -62,7 +62,7 @@ new Chartist.Line('.ct-sm-line-chart', {
   ]
 }, {
   fullWidth: true,
-  
+
   plugins: [
     Chartist.plugins.tooltip()
   ],

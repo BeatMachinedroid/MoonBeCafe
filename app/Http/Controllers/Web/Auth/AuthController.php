@@ -54,7 +54,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login');
+        return redirect()->route('view.login');
     }
 
     public function forgot(Request $request)

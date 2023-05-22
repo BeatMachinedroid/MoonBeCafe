@@ -14,7 +14,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'image' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|mimes:jpeg,png,jpg,gif',
         ]);
 
         if ($request->has('image')) {
@@ -32,6 +32,32 @@ class CategoryController extends Controller
         return back()->with('message', 'Data saved successfully');
     }
 
+    public function edit(Request $request)
+    {
+        $category = Category::findOrFail($request->id);
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+        if ($request->has('image')) {
+            $request->validate([
+                'name' => 'required',
+                'image' => 'required|mimes:jpeg,png,jpg,gif',
+            ]);
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $originalName = $file->getClientOriginalName();
+            $file->storeAs('public/category/', $originalName);
+            $category->name = $request->name;
+            $category->image = $originalName;
+            $category->save();
+        }
+            $category->name = $request->name;
+            $category->save();
+
+        return back()->with('message', 'Data saved successfully');
+    }
+
     public function delete($id)
     {
         $category = Category::find(decrypt($id));
@@ -42,6 +68,12 @@ class CategoryController extends Controller
 
     public function search(Request $request)
     {
-        
+        $search = $request->input('search');
+        if($search){
+            $cate = Category::where('name', 'LIKE',  $search . '%')->orwhere('image', 'LIKE',  $search . '%')->paginate(5);
+        }
+
+        return view('layout.menu.category' , compact('cate'));
     }
+
 }

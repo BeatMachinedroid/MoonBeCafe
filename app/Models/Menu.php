@@ -14,10 +14,16 @@ class Menu extends Model
         'category',
         'image',
         'price',
+        'stock',
     ];
 
-    public function category()
+    public function cate()
     {
         return $this->belongsTo(Category::class,'category');
+    }
+
+    public function order()
+    {
+        return $this->hasmany(Order::class);
     }
 }
