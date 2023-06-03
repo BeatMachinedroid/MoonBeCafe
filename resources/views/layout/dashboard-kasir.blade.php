@@ -89,17 +89,24 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="card-title">
-                                    <h4>Chart Penjualan</h4>
-
-                                </div>
                                 <div class="card-body">
-                                    <div class="ct-bar-chart m-t-30">
-
-                                    </div>
+                                    <h4 class="card-title">Total Incomes chart</h4>
+                                    <ul class="list-inline text-right">
+                                        {{-- <li>
+                                            <h5><i class="fa fa-circle m-r-5 text-inverse"></i>iPhone</h5>
+                                        </li>
+                                        <li>
+                                            <h5><i class="fa fa-circle m-r-5 text-info"></i>iPad</h5>
+                                        </li>
+                                        <li>
+                                            <h5><i class="fa fa-circle m-r-5 text-success"></i>iPod</h5>
+                                        </li> --}}
+                                    </ul>
+                                    <div id="morris-area-chart"></div>
                                 </div>
                             </div>
                         </div>

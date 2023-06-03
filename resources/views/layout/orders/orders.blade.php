@@ -33,10 +33,10 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-9">
-                                        <button type="button" class="btn btn-primary btn-addon" data-toggle="modal" data-target="#addModal">
+                                        {{-- <button type="button" class="btn btn-primary btn-addon" data-toggle="modal" data-target="#addModal">
                                             <i class="ti-plus"></i>
-                                            Add Table
-                                        </button>
+                                            Add Order
+                                        </button> --}}
                                     </div>
 
                                     <div class="col-sm-3" style="padding-bottom: 0; padding-top: 0;">
@@ -60,6 +60,7 @@
                                                             @endif
                                                             <tr>
                                                                 <th>#</th>
+                                                                <th>Order Code</th>
                                                                 <th>Name</th>
                                                                 <th>Email</th>
                                                                 <th>Meja</th>
@@ -67,14 +68,17 @@
                                                                 <th>jumlah</th>
                                                                 <th>Total Price</th>
                                                                 <th>Status</th>
-                                                                <th>Date</th>
+                                                                <th class="text-left">Date</th>
+                                                                @if (Auth::user()->role == 'admin')
                                                                 <th class="text-left">Action</th>
+                                                                @endif
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             @forelse ($order as $no => $item)
                                                             <tr>
                                                                 <th scope="row">{{ $no+1 }}</th>
+                                                                <td>{{ $item->order_code }}</td>
                                                                 <td>{{ $item->name }}</td>
                                                                 <td>{{ $item->email }}</td>
                                                                 <td>{{ $item->Meja->meja }}</td>
@@ -82,16 +86,16 @@
                                                                 <td>{{ $item->jumlah }}</td>
                                                                 <td class="color-primary">Rp. {{ $item->total_price }}</td>
                                                                 <td>
-                                                                    @if ($item->payment_status == 'menunggu pembayaran')
+                                                                    @if ($item->payment_status == 'pending')
                                                                     <span class="badge badge-warning">{{ $item->payment_status }}</span>
-                                                                    @elseif ($item->payment_status == 'sudah dibayar')
+                                                                    @elseif ($item->payment_status == 'settlement')
                                                                     <span class="badge badge-primary">{{ $item->payment_status }}</span>
                                                                     @else
                                                                     <span class="badge badge-danger">{{ $item->payment_status }}</span>
                                                                     @endif
                                                                 </td>
                                                                 <td>{{ $item->updated_at->format('d / m / Y')}}</td>
-                                                                @if (Auth::user()->role == 'kasir')
+                                                                @if (Auth::user()->role == 'admin')
                                                                 <td >
                                                                     <button class="btn btn-primary btn-sm " data-toggle="modal" data-target="#editmenu-{{ $item->id }}">
                                                                         <i class="ti-pencil"></i>
@@ -108,7 +112,7 @@
                                                                     <div class="modal-dialog modal-lg">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
-                                                                                <h5 class="modal-title" id="exampleModalLabel">Add Table</h5>
+                                                                                <h5 class="modal-title" id="exampleModalLabel">Edit Orders</h5>
                                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                                 <span aria-hidden="true"><i class="ti-close"></i></span>
                                                                                 </button>
@@ -165,9 +169,9 @@
                                                                                                                 <div class="form-group">
                                                                                                                     <select name="payment_status" class="form-control">
                                                                                                                         <option>{{ $item->payment_status }}</option>
-                                                                                                                        <option >menunggu pembayaran</option>
-                                                                                                                        <option >sudah dibayar</option>
-                                                                                                                        <option >batal</option>
+                                                                                                                        <option >pending</option>
+                                                                                                                        <option >settlement</option>
+                                                                                                                        <option >cancel</option>
                                                                                                                     </select>
                                                                                                                 </div>
                                                                                                             </div>
@@ -198,7 +202,11 @@
                                                     </table>
                                                 </div>
                                             </div>
+                                            <div class="row">
 
+                                                {{ $order->links('layout.vendor.pagination.costume') }}
+
+                                            </div>
                                     </div>
                                 </div>
                             </div>
@@ -211,7 +219,7 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Add Table</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Add Orders</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true"><i class="ti-close"></i></span>
                                 </button>
@@ -267,9 +275,9 @@
                                                                         <option>
                                                                             --Status--
                                                                         </option>
-                                                                        <option>menunggu pembayaran</option>
-                                                                        <option>sudah dibayar</option>
-                                                                        <option>batal</option>
+                                                                        <option>pending</option>
+                                                                        <option>settlement</option>
+                                                                        <option>cancel</option>
                                                                     </select>
                                                                 </div>
                                                             </div>

@@ -33,10 +33,12 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-3">
+                                        @if (Auth::user()->role == 'admin')
                                         <button type="button" class="btn btn-primary btn-addon m-b-10 m-l-5" data-toggle="modal" data-target="#addModal">
                                             <i class="ti-plus"></i>
                                             Add Menu
                                         </button>
+                                        @endif
                                     </div>
                                     <div class="col-sm-6" style="text-align:right; ">
                                     </div>
@@ -64,9 +66,11 @@
                                                                 <th>Menu</th>
                                                                 <th>Category</th>
                                                                 <th>Price</th>
-                                                                <th>status</th>
-                                                                <th>image</th>
+                                                                <th>Stock</th>
+                                                                <th class="text-center">image</th>
+                                                                @if (Auth::user()->role == 'admin')
                                                                 <th class="text-left">Action</th>
+                                                                @endif
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -81,15 +85,16 @@
                                                                     @endif
                                                                     <td>Rp.{{ $item->price }}</td>
                                                                     <td>
-                                                                        @if ($item->status == 'tersedia')
-                                                                        <span class="badge badge-primary">Tersedia</span>
+                                                                        @if ($item->status >= 20)
+                                                                        <span class="badge badge-primary">{{ $item->status }}</span>
                                                                         @else
-                                                                        <span class="badge badge-danger">Out of stock</span>
+                                                                        <span class="badge badge-danger">{{ $item->status }}</span>
                                                                         @endif
                                                                     </td>
-                                                                    <td><img src="{{ asset('storage/menu/' . $item->image) }}"
+                                                                    <td class="text-center"><img src="{{ asset('storage/menu/' . $item->image) }}"
                                                                         alt="{{ $item->nama }}"
                                                                         style="width: 120px; height: 120px;"></td>
+                                                                    @if (Auth::user()->role == 'admin')
                                                                     <td class="text-left">
                                                                         <button class="btn btn-primary btn-sm btn-addon" data-toggle="modal" data-target="#editmenu-{{ $item->id }}">
                                                                             <i class="ti-pencil"></i>
@@ -101,6 +106,7 @@
                                                                             Delete
                                                                         </a>
                                                                     </td>
+                                                                    @endif
                                                                 </tr>
                                                             @empty
                                                                 <tr>
@@ -172,12 +178,7 @@
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <select name="status" class="form-control" id="">
-                                                    <option value=""> - Status - </option>
-                                                    <option value="tersedia">Tersedia</option>
-                                                    <option value="tidak-tersedia">Tidak Tersedia</option>
-                                                </select>
-
+                                                <input type="text" class="form-control" placeholder="Stock" name="status">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -202,7 +203,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Barang</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit Menu</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true"><i class="ti-close"></i></span>
                 </button>
@@ -250,11 +251,7 @@
                                             </div>
                                             <div class="col-lg-4">
                                                 <div class="form-group">
-                                                    <select name="status" class="form-control" id="">
-                                                        <option value="{{ $item->status }}"> {{ $item->status }} </option>
-                                                        <option value="tersedia">Tersedia</option>
-                                                        <option value="tidak-tersedia">Tidak Tersedia</option>
-                                                    </select>
+                                                    <input type="text" class="form-control" placeholder="Stock" name="status" value="{{ $item->status }}">
                                                 </div>
                                             </div>
                                             <div class="col-lg-12">

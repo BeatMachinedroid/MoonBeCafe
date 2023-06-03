@@ -56,3 +56,7 @@ Route::post('/orders/add/proses', [OrderController::class, 'create'])->name('ord
 Route::post('/orders/edit', [OrderController::class, 'edit'])->name('order.edit');
 Route::get('/orders/{id}/delete' , [OrderController::class , 'delete']);
 Route::get('/orders/search', [OrderController::class, 'search'])->name('order.search');
+
+Route::get('/acount', [ViewController::class, 'view_acount'])->name('view.acount');
+Route::put('/acount/edit', [AuthController::class, 'edit'])->name('put.user');
+Route::get('/acount/{id}/delete', [AuthController::class, 'delete'])->name('delete.user');

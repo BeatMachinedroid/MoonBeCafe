@@ -49,6 +49,7 @@
                 </li>
                 <li><a href="{{ route('view.meja') }}"><i class="ti-notepad"></i> Table </a></li>
                 <li><a href="{{ route('view.order') }}"><i class="ti-view-list-alt"></i> Orders </a></li>
+                <li><a href=""><i class="ti-user"></i> Acount </a></li>
 
                 {{-- <li><a href=""><i class="ti-user"></i> Costumers </a></li> --}}
                 {{-- <li><a href=""><i class="ti-rss"></i> Pemesanan </a></li>
@@ -77,18 +78,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <div class="float-left">
+                {{-- <div class="float-left">
                     <div class="hamburger sidebar-toggle">
                         <span class="line"></span>
                         <span class="line"></span>
                         <span class="line"></span>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="float-right">
                     <div class="dropdown dib">
                         <div class="header-icon" data-toggle="dropdown" aria-expanded="false">
-                            <span class="user-avatar">{{ Auth::user()->username }}
+                            <span class="user-avatar">{{ Auth::user()->username }} - {{ Auth::user()->role }}
                                 <i class="ti-angle-down f-s-10"></i>
                             </span>
                             <div class="drop-down dropdown-profile dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(119px, 51px, 0px); top: 0px; left: 0px; will-change: transform;">
@@ -96,7 +97,7 @@
                                     <span class="text-left">{{ Auth::user()->email }}</span>
                                     <p class="trial-day">{{ Auth::user()->role }}</p>
                                 </div>
-                                <div class="dropdown-content-body">
+                                {{-- <div class="dropdown-content-body">
                                     <ul>
                                         <li>
                                             <a href="{{ route('logout') }}">
@@ -105,7 +106,7 @@
                                             </a>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -155,54 +156,45 @@
 <script src="{{ asset('assets/js/lib/sparklinechart/sparkline.init.js') }}"></script>
 <script src="{{ asset('assets/js/lib/owl-carousel/owl.carousel.min.js') }}"></script>
 <script src="{{ asset('assets/js/lib/owl-carousel/owl.carousel-init.js') }}"></script>
+
+<script src="{{ asset('assets/js/lib/morris-chart/raphael-min.js')}}"></script>
+<script src="{{ asset('assets/js/lib/morris-chart/morris.js')}}"></script>
+{{-- <script src="{{ asset('assets/js/lib/morris-chart/morris-init.js')}}"></script> --}}
  {{-- scripit init --}}
 {{-- <script src="{{ asset('assets/js/dashboard2.js') }}"></script> --}}
 <script>
+    Morris.Area( {
+		element: 'morris-area-chart',
+		data: [
 
-(function ($) {
-    "use strict";
-
-    var data = {
-        labels: [
-            @foreach ($chart as $item)
-                '{{ $item->month }}',
-            @endforeach
-        ],
-        series: [
-        @foreach ($chart as $item)
-        [ {{ $item->count }} ],
-        @endforeach
-
-  ]
-    };
-
-    var options = {
-        seriesBarDistance: 10
-    };
-
-    var responsiveOptions = [
-  ['screen and (max-width: 640px)', {
-            seriesBarDistance: 5,
-            axisX: {
-                labelInterpolationFnc: function (value) {
-                    return value[0];
+            @forelse ($orders as $order)
+            {
+				period: '{{ $order->year }}',
+				orders : {{ $order->total_orders }},
+                pemasukan : {{ $order->pemasukan}},
+            },
+            @empty
+                {
+                    period : 'data is empty',
+                    orders : 0,
+                    pemasukan : 0,
                 }
-            }
-  }]
-];
+            @endforelse
+        ],
 
-    new Chartist.Bar('.ct-bar-chart', data, options, responsiveOptions);
+		lineColors: [  '#DC3545','#28A745', '#007BFF' ],
+		xkey: 'period',
+		ykeys: [ 'orders' , 'pemasukan'],
+		labels: [ 'Order' ,'pemasukan'],
+		pointSize: 0,
+		lineWidth: 0,
+		resize: true,
+		fillOpacity: 0.8,
+		behaveLikeLine: true,
+		gridLineColor: '#e0e0e0',
+		hideHover: 'auto'
 
-})(jQuery);
-
-
-
-
-
-
-
-
-
+	} );
 </script>
 
 </html>

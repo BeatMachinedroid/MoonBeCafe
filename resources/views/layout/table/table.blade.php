@@ -34,10 +34,12 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-8">
+                                        @if (Auth::user()->role == 'admin')
                                         <button type="button" class="btn btn-primary btn-addon" data-toggle="modal" data-target="#addModal">
                                             <i class="ti-plus"></i>
                                             Add Table
                                         </button>
+                                        @endif
                                     </div>
                                     <div class="col-sm-4">
                                         <form action="{{ route('search.meja') }}" method="get">
@@ -61,8 +63,10 @@
                                                         <tr>
                                                             <th>#</th>
                                                             <th>Nama Meja</th>
-                                                            <th>QR Codes</th>
+                                                            <th class="text-center">QR Codes</th>
+                                                            @if (Auth::user()->role == 'admin')
                                                             <th style=" text-align: left">Action</th>
+                                                            @endif
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -70,9 +74,10 @@
                                                             <tr>
                                                                 <th scope="row">{{ $no + 1 }}</th>
                                                                 <td>{{ $item->meja }}</td>
-                                                                <td><img src="{{ asset('storage/qrcodes/' . $item->qrcode) }}"
+                                                                <td class="text-center"><img src="{{ asset('storage/qrcodes/' . $item->qrcode) }}"
                                                                         alt="{{ $item->nama }}"
                                                                         style="width: 200px; height: 200px;"></td>
+                                                                @if (Auth::user()->role == 'admin')
                                                                 <td style="text-align: left">
 
                                                                     <a href="{{ 'meja/' . encrypt($item->id) . '/download' }}"
@@ -92,6 +97,7 @@
                                                                     </a>
 
                                                                 </td>
+                                                                @endif
                                                             </tr>
                                                         @empty
                                                             <tr>

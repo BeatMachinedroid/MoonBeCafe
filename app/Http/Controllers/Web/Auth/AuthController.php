@@ -110,4 +110,23 @@ class AuthController extends Controller
 
         return redirect('login')->with('message', 'Your password has been changed!');
     }
+
+    public function edit(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+        $request->validate([
+            'username' => 'required',
+            'email' => 'required',
+            'role' => 'required',
+            'password' => 'required',
+        ]);
+
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return redirect()->route('view.acount')->with('message', 'Data has been edited successfully');
+    }
 }

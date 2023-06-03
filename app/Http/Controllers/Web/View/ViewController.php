@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\User;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Customer;
@@ -30,6 +31,16 @@ class ViewController extends Controller
         return view('Auth.forgot');
     }
 
+    public function view_acount()
+    {
+        $user = User::paginate(5);
+        if(Auth::check()){
+            return view('Auth.akun' , compact('user'));
+        }else{
+            return redirect()->route('view.login');
+        }
+    }
+
     public function view_dashboard()
     {
 
@@ -38,10 +49,19 @@ class ViewController extends Controller
                 $meja = Table::all();
                 $order = Order::all();
                 $hasil = Order::sum('total_price');
-                $chart = Order::select( DB::raw('count(*) as count'),'menu', DB::raw('MONTHNAME(created_at) as month'))
-            ->groupBy('month','menu')->get();
+
+                $orders = Order::select(
+                    DB::raw('YEAR(created_at) as year'),
+                    DB::raw('COUNT(DISTINCT order_code) as total_orders'),
+                    DB::raw('sum(total_price) as pemasukan'),
+                )
+                ->groupBy('year')
+                ->get();
+
+                // $months = [];
+
             // return $chart;
-                return view('layout.dashboard-kasir' , compact('menu','meja','order','hasil','chart'));
+                return view('layout.dashboard-kasir' , compact('menu','meja','order','hasil','orders'));
         }else{
             return redirect()->route('view.login');
         }
@@ -87,7 +107,7 @@ public function view_order()
 {
     $menu = Menu::with('cate')->get();
     $meja = Table::all();
-    $order = Order::orderby('created_at')->get();
+    $order = Order::orderby('created_at', 'desc')->paginate(5);
     if(Auth::check()){
         return view('layout.orders.orders'  , compact('meja', 'menu', 'order'));
     }else{

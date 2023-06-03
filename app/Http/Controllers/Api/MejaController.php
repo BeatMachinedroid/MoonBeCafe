@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Menu;
+use App\Models\Table;
 
-class MenuController extends Controller
+class MejaController extends Controller
 {
     public function index()
     {
-        $menu = Menu::with('cate')->get();
-        return $this->sendJson($menu, 'berhasil');
+        $meja = Table::all();
+        return $this->sendJson($meja);
     }
 }

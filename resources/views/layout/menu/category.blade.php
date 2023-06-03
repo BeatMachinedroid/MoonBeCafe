@@ -35,10 +35,12 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-8">
-                                        <button type="button" class="btn btn-primary btn-addon m-b-10 m-l-5" data-toggle="modal" data-target="#addModal">
-                                        <i class="ti-plus"></i>
-                                            Add Category
-                                        </button>
+                                        @if (Auth::user()->role == 'admin')
+                                            <button type="button" class="btn btn-primary btn-addon m-b-10 m-l-5" data-toggle="modal" data-target="#addModal">
+                                            <i class="ti-plus"></i>
+                                                Add Category
+                                            </button>
+                                        @endif
                                     </div>
                                     <div class="col-sm-4">
                                         <form action="{{ route('search.category') }}" method="get">
@@ -64,8 +66,10 @@
                                                             <th>#</th>
                                                             <th>Category</th>
                                                             <th>File Name</th>
-                                                            <th>Image</th>
+                                                            <th class="text-center">Image</th>
+                                                            @if (Auth::user()->role == 'admin')
                                                             <th style=" text-align: left">Action</th>
+                                                            @endif
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -74,9 +78,10 @@
                                                                 <th scope="row">{{ $no + 1 }}</th>
                                                                 <td>{{ $item->name }}</td>
                                                                 <td>{{ $item->image }}</td>
-                                                                <td><img src="{{ asset('storage/category/' . $item->image) }}"
+                                                                <td class="text-center"><img src="{{ asset('storage/category/' . $item->image) }}"
                                                                         alt="{{ $item->nama }}"
                                                                         style="width: 120px; height: 120px;"></td>
+                                                                @if (Auth::user()->role == 'admin')
                                                                 <td style="text-align: left">
                                                                     <button class="btn btn-primary btn-sm btn-addon" data-toggle="modal" data-target="#editcate-{{ $item->id }}">
                                                                         <i class="ti-pencil"></i>
@@ -88,6 +93,7 @@
                                                                         Delete
                                                                     </a>
                                                                 </td>
+                                                                @endif
                                                             </tr>
                                                         @empty
                                                             <tr>

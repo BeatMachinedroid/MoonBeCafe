@@ -49,6 +49,7 @@
                 </li>
                 <li><a href="{{ route('view.meja') }}"><i class="ti-notepad"></i> Table </a></li>
                 <li><a href="{{ route('view.order') }}"><i class="ti-view-list-alt"></i> Orders </a></li>
+                <li><a href="{{ route('view.acount') }}"><i class="ti-user"></i> Acount </a></li>
 
                 {{-- <li><a href=""><i class="ti-user"></i> Costumers </a></li> --}}
                 {{-- <li><a href=""><i class="ti-rss"></i> Pemesanan </a></li>
@@ -88,7 +89,7 @@
                 <div class="float-right">
                     <div class="dropdown dib">
                         <div class="header-icon" data-toggle="dropdown" aria-expanded="false">
-                            <span class="user-avatar">{{ Auth::user()->username }}
+                            <span class="user-avatar">{{ Auth::user()->username }} - {{ Auth::user()->role }}
                                 <i class="ti-angle-down f-s-10"></i>
                             </span>
                             <div class="drop-down dropdown-profile dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(119px, 51px, 0px); top: 0px; left: 0px; will-change: transform;">
@@ -96,7 +97,7 @@
                                     <span class="text-left">{{ Auth::user()->email }}</span>
                                     <p class="trial-day">{{ Auth::user()->role }}</p>
                                 </div>
-                                <div class="dropdown-content-body">
+                                {{-- <div class="dropdown-content-body">
                                     <ul>
                                         <li>
                                             <a href="{{ route('logout') }}">
@@ -105,7 +106,7 @@
                                             </a>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
